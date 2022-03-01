@@ -1,7 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'vazir-font/dist/Farsi-Digits/font-face-FD.css';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "vazir-font/dist/Farsi-Digits/font-face-FD.css";
+import "antd/dist/antd.css";
+import "./index.css";
 import YourAppName from "./Containers/YourAppName";
 
 ReactDOM.render(
