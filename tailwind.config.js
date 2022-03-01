@@ -1,7 +1,11 @@
 module.exports = {
   content: ["./public/index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Vazir FD"],
+      },
+    },
   },
   plugins: [require("tailwind-scrollbar")],
 };
