@@ -6,4 +6,5 @@
 *::before,
 *::after {
   direction: rtl;
+  font-family: "Vazir FD", sans-serif;
 }

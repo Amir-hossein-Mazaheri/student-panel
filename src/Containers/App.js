@@ -4,6 +4,9 @@ import "./App.css";
 import { Spin } from "antd";
 import Wrapper from "../Layouts/Wrapper";
 
+// layout assets
+import MainLayout from "../Layouts/MainLayout";
+
 // pages
 import HomePage from "../Pages";
 import NotFoundPage from "../Pages/Error/404";
@@ -22,10 +25,12 @@ function App() {
     <Suspense fallback={loadingSpinner}>
       <BrowserRouter>
         <Routes>
-          <Route index element={<HomePage />} />
-          <Route path="/page1" element={<Page1 />} />
-          <Route path="/page2" element={<Page2 />} />
-          <Route path="*" component={<NotFoundPage />} />
+          <Route element={<MainLayout asRoute={true} />}>
+            <Route index element={<HomePage />} />
+            <Route path="/page1" element={<Page1 />} />
+            <Route path="/page2" element={<Page2 />} />
+            <Route path="*" component={<NotFoundPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </Suspense>

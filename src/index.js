@@ -3,11 +3,11 @@ import ReactDOM from "react-dom";
 import "vazir-font/dist/Farsi-Digits/font-face-FD.css";
 import "antd/dist/antd.css";
 import "./index.css";
-import YourAppName from "./Containers/YourAppName";
+import StudentPanel from "./Containers/StudentPanel";
 
 ReactDOM.render(
   <React.StrictMode>
-    <YourAppName />
+    <StudentPanel />
   </React.StrictMode>,
   document.getElementById("root")
 );
