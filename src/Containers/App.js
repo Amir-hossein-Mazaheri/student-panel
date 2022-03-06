@@ -11,8 +11,8 @@ import MainLayout from "../Layouts/MainLayout";
 import HomePage from "../Pages";
 import NotFoundPage from "../Pages/Error/404";
 
-const Page1 = lazy(() => import("../Pages/Page1"));
-const Page2 = lazy(() => import("../Pages/Page2"));
+const Exam = lazy(() => import("../Pages/Exam"));
+const ExamResult = lazy(() => import("../Pages/ExamResult"));
 
 const loadingSpinner = (
   <Wrapper>
@@ -27,8 +27,8 @@ function App() {
         <Routes>
           <Route element={<MainLayout asRoute={true} />}>
             <Route index element={<HomePage />} />
-            <Route path="/page1" element={<Page1 />} />
-            <Route path="/page2" element={<Page2 />} />
+            <Route path="/exam/:id" element={<Exam />} />
+            <Route path="/exam-result/:id" element={<ExamResult />} />
             <Route path="*" component={<NotFoundPage />} />
           </Route>
         </Routes>
