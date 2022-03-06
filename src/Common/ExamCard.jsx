@@ -1,7 +1,6 @@
 import Tag from "./Tag";
 import Button from "./Button";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import { Descriptions } from "antd";
 
 const { Item } = Descriptions;
@@ -16,18 +15,6 @@ function ExamCard({
   moreDetailLink,
 }) {
   const { eachCount, allCount } = count;
-
-  useEffect(() => {
-    if (!attendLink && !moreDetailLink) {
-      throw new Error("one of attendLink or moreDetailLink must be filled");
-    }
-
-    if (attendLink && moreDetailLink) {
-      throw new Error(
-        "only one of attendLink or moreDetailLink must be filled"
-      );
-    }
-  }, [attendLink, moreDetailLink]);
 
   return (
     <div className="rounded-lg space-y-7 px-7 py-4 shadow-lg shadow-gray-200">
@@ -85,10 +72,6 @@ function ExamCard({
                 <p>
                   <span>مدت زمان مجاز : </span>
                   <span>{time.duration}</span>
-                </p>
-                <p>
-                  <span>دانش آموزان شرکت کرده : </span>
-                  <span>{time.attended}</span>
                 </p>
               </div>
             </div>
