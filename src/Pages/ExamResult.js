@@ -1,8 +1,18 @@
+import { useCallback, useState } from "react";
 import Button from "../Common/Button";
 import ExamCard from "../Common/ExamCard";
 import QuestionCard from "../Components/QuestionCard";
 
 function ExamResult() {
+  const [questionAnswers, setQuestionAnswers] = useState([]);
+  const handleExamSubmission = useCallback(
+    (event) => {
+      event.preventDefault();
+      console.log(questionAnswers);
+    },
+    [questionAnswers]
+  );
+
   return (
     <div>
       <ExamCard
@@ -28,26 +38,37 @@ function ExamResult() {
         }}
       />
 
-      <div className="sticky top-5 right-5 mt-8">
-        <Button className="bg-green-500 flex mr-auto text-white" type="submit">
-          ثبت پاسخ ها
-        </Button>
-      </div>
+      <div>
+        <form onSubmit={handleExamSubmission}>
+          <div className="sticky top-5 right-5 mt-8">
+            <Button
+              className="bg-green-500 flex mr-auto text-white"
+              type="submit"
+            >
+              ثبت پاسخ ها
+            </Button>
+          </div>
 
-      <div className="space-y-8 mt-10">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-          <QuestionCard
-            questionTag={`سوال ${n}`}
-            title="سوال سوال سوال سوال سوال سوال سوال سوال سوال"
-            categories={["متوسط", "فصل 1", "دهم", "تجربی"]}
-            choices={[
-              "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
-              "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
-              "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
-              "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
-            ]}
-          />
-        ))}
+          <div className="space-y-8 mt-10">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+              <QuestionCard
+                key={n}
+                id={n}
+                questionTag={`سوال ${n}`}
+                title="سوال سوال سوال سوال سوال سوال سوال سوال سوال"
+                categories={["متوسط", "فصل 1", "دهم", "تجربی"]}
+                choices={[
+                  "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
+                  "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
+                  "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
+                  "گزینه گزینه گزینه گزینه گزینه گزینه گزینه گزینه",
+                ]}
+                setQuestionAnswers={setQuestionAnswers}
+                questionAnswers={questionAnswers}
+              />
+            ))}
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -1,6 +1,35 @@
+import { Radio, Space } from "antd";
+import { useCallback, useState } from "react";
 import Tag from "../Common/Tag";
 
-function QuestionCard({ questionTag, title, categories, choices }) {
+function QuestionCard({
+  id,
+  questionTag,
+  title,
+  categories,
+  choices,
+  defaultChoice,
+  disabled = false,
+  setQuestionAnswers,
+  questionAnswers,
+}) {
+  const [choice, setChoice] = useState(defaultChoice || null);
+  const addQuestionAnswer = useCallback(
+    (event) => {
+      const value = event.target.value;
+      setChoice(value);
+      const answers = [...questionAnswers];
+      const questionIndex = answers.findIndex((answer) => answer.id === id);
+      if (questionIndex) {
+        answers.push({ id, answer: value });
+      } else {
+        answers[questionIndex].answer = value;
+      }
+      setQuestionAnswers(answers);
+    },
+    [questionAnswers, id, setQuestionAnswers]
+  );
+
   return (
     <div className="px-7 py-4 rounded-lg shadow-lg shadow-gray-200">
       <div className="flex items-center justify-between">
@@ -17,13 +46,18 @@ function QuestionCard({ questionTag, title, categories, choices }) {
       <div className="mt-5">
         <h3 className="text-md font-medium">{title}</h3>
         <div className="mt-5 space-y-4">
-          <ul>
-            {choices.map((choice) => (
-              <li>
-                <p>{choice}</p>
-              </li>
-            ))}
-          </ul>
+          <Radio.Group onChange={addQuestionAnswer} value={choice}>
+            <Space direction="vertical">
+              {choices.map((choice, index) => (
+                <Radio disabled={disabled} value={index + 1}>
+                  {choice}
+                </Radio>
+              ))}
+              <Radio disabled={disabled} value={null}>
+                <span>بدون جواب</span>
+              </Radio>
+            </Space>
+          </Radio.Group>
         </div>
       </div>
     </div>
