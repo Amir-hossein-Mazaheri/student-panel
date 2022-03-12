@@ -20,10 +20,14 @@ function QuestionCard({
       setChoice(value);
       const answers = [...questionAnswers];
       const questionIndex = answers.findIndex((answer) => answer.id === id);
-      if (questionIndex) {
-        answers.push({ id, answer: value });
-      } else {
+      if (questionIndex > -1) {
+        if (!value) {
+          setQuestionAnswers(answers.filter((answer) => answer.id !== id));
+          return;
+        }
         answers[questionIndex].answer = value;
+      } else {
+        answers.push({ id, answer: value });
       }
       setQuestionAnswers(answers);
     },

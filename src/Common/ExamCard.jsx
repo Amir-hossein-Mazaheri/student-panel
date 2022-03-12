@@ -1,6 +1,5 @@
 import Tag from "./Tag";
 import Button from "./Button";
-import { Link } from "react-router-dom";
 import { Descriptions } from "antd";
 
 const { Item } = Descriptions;
@@ -10,9 +9,9 @@ function ExamCard({
   count,
   categories,
   time,
-  attendLink,
   abstractInfo,
   moreDetailLink,
+  answerListMaker,
 }) {
   const { eachCount, allCount } = count;
 
@@ -76,13 +75,13 @@ function ExamCard({
               </div>
             </div>
           )}
-          {attendLink && (
+          {answerListMaker && (
             <div>
-              <Link to={attendLink}>
-                <Button className="rounded-full bg-green-500 text-white w-full">
+              <Button onClick={answerListMaker}>
+                <Button className="rounded-full bg-green-500 text-white w-full flex">
                   <span>شرکت در آزمون</span>
                 </Button>
-              </Link>
+              </Button>
             </div>
           )}
         </div>

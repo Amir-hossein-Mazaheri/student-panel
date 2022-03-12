@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import YOUR_REDUCER_NAME from "./YOUR_REDUCER_NAME";
+import exam from "./exam";
 
 const entitiesReducers = combineReducers({
-  YOUR_REDUCER_NAME,
+  exam,
 });
 
 export default entitiesReducers;

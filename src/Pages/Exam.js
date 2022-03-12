@@ -1,10 +1,18 @@
-import { useCallback, useState } from "react";
+import Countdown from "antd/lib/statistic/Countdown";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Button from "../Common/Button";
 import ExamCard from "../Common/ExamCard";
 import QuestionCard from "../Components/QuestionCard";
+import dayjs from "dayjs";
+import { useParams } from "react-router";
+import axios from "axios";
 
 function ExamResult() {
+  const { id } = useParams();
   const [questionAnswers, setQuestionAnswers] = useState([]);
+  // const { remainingTime } = useSelector((store) => store.entities.exam);
+  const [remainingTime, setRemainingTime] = useState(0);
   const handleExamSubmission = useCallback(
     (event) => {
       event.preventDefault();
@@ -12,6 +20,12 @@ function ExamResult() {
     },
     [questionAnswers]
   );
+
+  useEffect(() =>{
+    axios.get(`/exams/${id.split("-")[0]}/students/${id.split("-")[1]}`).then(res => {
+      
+    })
+  }, [id]);
 
   return (
     <div>
@@ -41,12 +55,23 @@ function ExamResult() {
       <div>
         <form onSubmit={handleExamSubmission}>
           <div className="sticky top-5 right-5 mt-8">
-            <Button
-              className="bg-green-500 flex mr-auto text-white"
-              type="submit"
-            >
-              ثبت پاسخ ها
-            </Button>
+            <div className="flex justify-between">
+              <div>
+                <Countdown
+                  title="زمان باقی مانده"
+                  value={dayjs(remainingTime).millisecond()}
+                  // onFinish={onFinish}
+                />
+              </div>
+              <div>
+                <Button
+                  className="bg-green-500 flex mr-auto text-white"
+                  type="submit"
+                >
+                  ثبت پاسخ ها
+                </Button>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-8 mt-10">

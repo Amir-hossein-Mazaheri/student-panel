@@ -104,7 +104,7 @@ function ExamResult() {
         >
           <div className="mb-5 flex justify-between">
             <div>
-              <h2 className="text-xl font-bold">پاسخنامه دانش آموز</h2>
+              <h2 className="text-xl font-bold">پاسخنامه</h2>
             </div>
             <div>
               <Dropdown overlay={printMenu} placement="bottomCenter" arrow>

@@ -20,7 +20,7 @@ function AnswerList({ answers, children }) {
         title: "گزینه انتخابی",
         dataIndex: "selected",
         key: "selected",
-        render: (text) => <p>{text ? text : "نزده"}</p>,
+        render: (text) => <p>{text ? text : "____"}</p>,
       },
       {
         title: "گزینه صحیح",

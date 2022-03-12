@@ -1,11 +1,11 @@
 import ExamCard from "../Common/ExamCard";
 
-function ExamsHistory() {
+function ExamsHistory({ exams }) {
   return (
     <div className="space-y-8">
-      {[1, 2].map((n) => (
+      {exams.map((exam) => (
         <ExamCard
-          key={n}
+          key={exam.id}
           moreDetailLink="/"
           abstractInfo={{
             questionCount: 100,
