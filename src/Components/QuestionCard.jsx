@@ -12,6 +12,7 @@ function QuestionCard({
   disabled = false,
   setQuestionAnswers,
   questionAnswers,
+  answerListId,
 }) {
   const [choice, setChoice] = useState(defaultChoice || null);
   const addQuestionAnswer = useCallback(
@@ -27,13 +28,17 @@ function QuestionCard({
         }
         answers[questionIndex].answer = value;
       } else {
-        answers.push({ id, answer: value });
+        answers.push({
+          question: id,
+          choice: value,
+          // student_exam: Number(answerListId),
+        });
       }
       setQuestionAnswers(answers);
     },
-    [questionAnswers, id, setQuestionAnswers]
+    [questionAnswers, setQuestionAnswers, id]
   );
-
+  // student_exam => answer list id , question => question_id, choice => choice
   return (
     <div className="px-7 py-4 rounded-lg shadow-lg shadow-gray-200">
       <div className="flex items-center justify-between">
@@ -52,9 +57,9 @@ function QuestionCard({
         <div className="mt-5 space-y-4">
           <Radio.Group onChange={addQuestionAnswer} value={choice}>
             <Space direction="vertical">
-              {choices.map((choice, index) => (
-                <Radio disabled={disabled} value={index + 1}>
-                  {choice}
+              {choices.map((choice) => (
+                <Radio disabled={disabled} value={choice.id}>
+                  {choice.text}
                 </Radio>
               ))}
               <Radio disabled={disabled} value={null}>
