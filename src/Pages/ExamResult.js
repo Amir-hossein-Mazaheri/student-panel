@@ -1,12 +1,18 @@
 import { Dropdown, Menu } from "antd";
 import { useMemo } from "react";
 import { useParams } from "react-router";
+import useSWR from "swr";
 import Button from "../Common/Button";
 import ExamCard from "../Common/ExamCard";
+import Spinner from "../Common/Spinner";
 import AnswerList from "../Components/AnswerList";
+import fetcher from "../Helpers/fetcher";
+import exam from "../Store/entities/exam";
 
 function ExamResult() {
   const { id } = useParams();
+
+  const { data: examResult } = useSWR(`/exams/${id}`, fetcher);
 
   const printMenu = useMemo(() => {
     return (
@@ -38,43 +44,37 @@ function ExamResult() {
             <span>پرینت کلید آزمون</span>
           </a>
         </Menu.Item>
-        <Menu.Item>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.luohanacademy.com"
-          >
-            <span>پرینت آزمون و پاسخنامه</span>
-          </a>
-        </Menu.Item>
       </Menu>
     );
   }, []);
 
-  console.log(id);
+  if (!examResult) {
+    return <Spinner />;
+  }
+
+  console.log(examResult);
 
   return (
     <div>
       <div>
         <h1 className="font-bold text-3xl mb-5 text-gray-800">
-          <span>نتیجه آزمون</span> <span>فلان</span>
+          <span>نتیجه آزمون</span> <span>{examResult.raw_exam.name}</span>
         </h1>
       </div>
       <ExamCard
         title="جمع بندی فیزیک 2"
         count={{
-          allCount: 20,
+          allCount: examResult.raw_exam.questions_count,
           eachCount: [
-            { title: "آسان", value: 5 },
-            { title: "متوسط", value: 5 },
-            { title: "سخت", value: 10 },
+            { title: "آسان", value: examResult.raw_exam.easies_count },
+            { title: "متوسط", value: examResult.raw_exam.mediums_count },
+            { title: "سخت", value: examResult.raw_exam.hards_count },
           ],
         }}
         categories={[
-          { title: "رشته ها", values: ["تجربی", "ریاضی"] },
-          { title: "پایه ها", values: ["دوازدهم", "یازدهم"] },
-          { title: "درس ها", values: ["فیزیک 2"] },
-          { title: "مباحث", values: ["گرما", "الکتریسیه"] },
+          { title: "پایه ها", values: examResult.raw_exam.grades },
+          { title: "درس ها", values: examResult.raw_exam.courses },
+          { title: "مباحث", values: examResult.raw_exam.subjects },
         ]}
         time={{
           start: "1400/02/11",

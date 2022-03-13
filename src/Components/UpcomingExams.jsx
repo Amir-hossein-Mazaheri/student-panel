@@ -9,20 +9,23 @@ function UpcomingExams({ exams }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const makeAnswerList = useCallback((examId) => {
-    const answerBody = {
-      exam: examId,
-      student: 2,
-      answers: [],
-    };
-    axios
-      .post(`/exams/${examId}/students/`, answerBody)
-      .then((res) => {
-        navigate(`/exam/${examId}-${res.data.id}/`);
-        dispatch(SET_REMAINING_TIME({ time: res.data.remain_time }));
-      })
-      .catch((err) => console.log(err.response));
-  }, [dispatch, navigate]);
+  const makeAnswerList = useCallback(
+    (examId) => {
+      const answerBody = {
+        exam: examId,
+        student: 2,
+        answers: [],
+      };
+      axios
+        .post(`/exams/${examId}/students/`, answerBody)
+        .then((res) => {
+          navigate(`/exam/${examId}-${res.data.id}/`);
+          dispatch(SET_REMAINING_TIME({ time: res.data.remain_time }));
+        })
+        .catch((err) => console.log(err.response));
+    },
+    [dispatch, navigate]
+  );
 
   return (
     <div className="space-y-8">
@@ -40,7 +43,6 @@ function UpcomingExams({ exams }) {
             ],
           }}
           categories={[
-            { title: "رشته ها", values: ["تجربی", "ریاضی"] },
             { title: "پایه ها", values: ["دوازدهم", "یازدهم"] },
             { title: "درس ها", values: ["فیزیک 2"] },
             { title: "مباحث", values: ["گرما", "الکتریسیه"] },

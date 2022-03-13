@@ -98,7 +98,6 @@ function ExamResult() {
           ],
         }}
         categories={[
-          { title: "رشته ها", values: ["تجربی"] },
           { title: "پایه ها", values: ["دوازدهم", "یازدهم"] },
           { title: "درس ها", values: ["فیزیک 2"] },
           { title: "مباحث", values: ["گرما", "الکتریسیه"] },

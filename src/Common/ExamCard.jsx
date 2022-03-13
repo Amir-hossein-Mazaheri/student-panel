@@ -1,6 +1,7 @@
 import Tag from "./Tag";
 import Button from "./Button";
 import { Descriptions } from "antd";
+import { Link } from "react-router-dom";
 
 const { Item } = Descriptions;
 
@@ -113,9 +114,11 @@ function ExamCard({
           </div>
 
           {moreDetailLink && (
-            <Button className="rounded-full bg-blue-500 text-white flex mr-auto">
-              <span>جزئیات بیشتر</span>
-            </Button>
+            <Link to={moreDetailLink}>
+              <Button className="rounded-full bg-blue-500 text-white flex mr-auto">
+                <span>جزئیات بیشتر</span>
+              </Button>
+            </Link>
           )}
         </div>
       )}
