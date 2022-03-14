@@ -1,5 +1,5 @@
 import { Dropdown, Menu } from "antd";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useParams } from "react-router";
 import useSWR from "swr";
 import Button from "../Common/Button";
@@ -7,11 +7,29 @@ import ExamCard from "../Common/ExamCard";
 import Spinner from "../Common/Spinner";
 import AnswerList from "../Components/AnswerList";
 import fetcher from "../Helpers/fetcher";
+import { showJalaliTime } from "../Helpers/convertToJalali";
 
 function ExamResult() {
   const { id } = useParams();
 
-  const { data: examResult } = useSWR(`/exams/${id}`, fetcher);
+  const { data: examResult } = useSWR(`/exams/${id}/`, fetcher);
+  const { data: studentResult } = useSWR(
+    `/exams/${id}/students/2/results`,
+    fetcher
+  );
+
+  const convertStatus = useCallback((status) => {
+    switch (status) {
+      case "wrong":
+        return "غلط";
+      case "correct":
+        return "صحصیح";
+      case "noanswer":
+        return "نزده";
+      default:
+        return;
+    }
+  }, []);
 
   const printMenu = useMemo(() => {
     return (
@@ -47,11 +65,11 @@ function ExamResult() {
     );
   }, []);
 
-  if (!examResult) {
+  if (!examResult || !studentResult) {
     return <Spinner />;
   }
 
-  console.log(examResult);
+  console.log(studentResult);
 
   return (
     <div>
@@ -61,7 +79,7 @@ function ExamResult() {
         </h1>
       </div>
       <ExamCard
-        title="جمع بندی فیزیک 2"
+        title={examResult.raw_exam.name}
         count={{
           allCount: examResult.raw_exam.questions_count,
           eachCount: [
@@ -76,29 +94,30 @@ function ExamResult() {
           { title: "مباحث", values: examResult.raw_exam.subjects },
         ]}
         time={{
-          start: "1400/02/11",
-          end: "1400/02/12",
-          duration: "120 دقیقه",
-          attended: "2 / 3",
+          start: showJalaliTime(examResult.start),
+          end: showJalaliTime(examResult.end),
+          duration: examResult.time + " دقیقه",
         }}
         abstractInfo={{
-          questionCount: 100,
-          empty: 20,
-          correct: 60,
-          wrong: 20,
-          purePercent: 80,
-          percent: 75,
+          questionCount: examResult.raw_exam.questions_count,
+          empty: studentResult.noanswers,
+          correct: studentResult.correct,
+          wrong: studentResult.wrong,
+          percent: studentResult.percent,
         }}
       />
 
       <div>
         <AnswerList
-          answers={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => ({
-            key: n,
-            number: n,
-            status: "درست",
-            selected: null,
-            correct: 4,
+          answers={studentResult.details.map((detail, index) => ({
+            key: index,
+            number: index,
+            status: convertStatus(detail.status),
+            selected: detail.choice ? (detail.choice.id % 4) + 1 : "نزده",
+            correct:
+              (detail.question.choices.find((choice) => choice.is_correct).id %
+                4) +
+              1,
           }))}
         >
           <div className="mb-5 flex justify-between">

@@ -31,15 +31,15 @@ function AnswerList({ answers, children }) {
     ];
   }, []);
 
-  const dynamicBg = useCallback((record) => {
-    const { selected, correct } = record;
-    if (selected === correct) {
-      return "bg-green-200";
-    }
-    if (selected !== correct && selected) {
-      return "bg-red-200";
-    }
-  }, []);
+  // const dynamicBg = useCallback((record) => {
+  //   const { selected, correct } = record;
+  //   if (selected === correct) {
+  //     return "bg-green-200";
+  //   }
+  //   if (selected !== correct && selected) {
+  //     return "bg-red-200";
+  //   }
+  // }, []);
 
   return (
     <div className="mt-8 mb-5">
@@ -48,7 +48,7 @@ function AnswerList({ answers, children }) {
         pagination={false}
         columns={formData}
         dataSource={answers}
-        rowClassName={dynamicBg}
+        // rowClassName={dynamicBg}
       />
     </div>
   );
