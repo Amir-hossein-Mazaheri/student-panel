@@ -44,6 +44,7 @@ function ExamResult() {
         console.log(res);
         setRemainingTime(res.data.remain_time);
         setFetchedQuestionAnswers(res.data.answers);
+        pushNotification("success", "پاسخ ها با موفقیت ذخیره شد.");
       })
       .catch((err) => console.log(err.response));
   }, [examId, examPageURL, fetchedQuestionAnswers, questionAnswers]);

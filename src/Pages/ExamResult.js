@@ -7,6 +7,7 @@ import ExamCard from "../Common/ExamCard";
 import Spinner from "../Common/Spinner";
 import AnswerList from "../Components/AnswerList";
 import fetcher from "../Helpers/fetcher";
+import FullAnswerList from "../Components/FullAnswerList";
 import { showJalaliTime } from "../Helpers/convertToJalali";
 
 function ExamResult() {
@@ -32,13 +33,14 @@ function ExamResult() {
   }, []);
 
   const printMenu = useMemo(() => {
+    if (!examResult) return;
     return (
       <Menu>
         <Menu.Item>
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://www.antgroup.com"
+            href={`/print_exam_questions/${examResult.raw_exam.id}`}
           >
             <span>پرینت آزمون</span>
           </a>
@@ -47,12 +49,12 @@ function ExamResult() {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://www.aliyun.com"
+            href={`/print_exam_all/${examResult.raw_exam.id}`}
           >
             <span>پرینت پاسخنامه تشریحی</span>
           </a>
         </Menu.Item>
-        <Menu.Item>
+        {/* <Menu.Item>
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -60,7 +62,7 @@ function ExamResult() {
           >
             <span>پرینت کلید آزمون</span>
           </a>
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
     );
   }, []);
@@ -147,6 +149,8 @@ function ExamResult() {
             </div>
           </div>
         </AnswerList>
+
+        <FullAnswerList answersList={studentResult.details} />
       </div>
     </div>
   );
