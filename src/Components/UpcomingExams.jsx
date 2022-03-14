@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import ExamCard from "../Common/ExamCard";
+import { showJalaliTime } from "../Helpers/convertToJalali";
 import { SET_REMAINING_TIME } from "../Store/entities/exam";
 
 function UpcomingExams({ exams }) {
@@ -33,25 +34,24 @@ function UpcomingExams({ exams }) {
         <ExamCard
           key={exam.id}
           attendLink="/"
-          title="جمع بندی فیزیک 2"
+          title={exam.raw_exam.name}
           count={{
-            allCount: 20,
+            allCount: exam.raw_exam.questions_count,
             eachCount: [
-              { title: "آسان", value: 5 },
-              { title: "متوسط", value: 5 },
-              { title: "سخت", value: 10 },
+              { title: "آسان", value: exam.raw_exam.easies_count },
+              { title: "متوسط", value: exam.raw_exam.mediums_count },
+              { title: "سخت", value: exam.raw_exam.hards_count },
             ],
           }}
           categories={[
-            { title: "پایه ها", values: ["دوازدهم", "یازدهم"] },
-            { title: "درس ها", values: ["فیزیک 2"] },
-            { title: "مباحث", values: ["گرما", "الکتریسیه"] },
+            { title: "پایه ها", values: exam.raw_exam.grades },
+            { title: "درس ها", values: exam.raw_exam.courses },
+            { title: "مباحث", values: exam.raw_exam.subjects },
           ]}
           time={{
-            start: "1400/02/11",
-            end: "1400/02/12",
-            duration: "120 دقیقه",
-            attended: "2 / 3",
+            start: showJalaliTime(exam.start),
+            end: showJalaliTime(exam.end),
+            duration: exam.time + " دقیقه",
           }}
           answerListMaker={() => makeAnswerList(exam.id)}
         />

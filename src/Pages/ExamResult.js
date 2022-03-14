@@ -7,7 +7,6 @@ import ExamCard from "../Common/ExamCard";
 import Spinner from "../Common/Spinner";
 import AnswerList from "../Components/AnswerList";
 import fetcher from "../Helpers/fetcher";
-import exam from "../Store/entities/exam";
 
 function ExamResult() {
   const { id } = useParams();

@@ -48,28 +48,32 @@ function ExamResult() {
       .catch((err) => console.log(err.response));
   }, [examId, examPageURL, fetchedQuestionAnswers, questionAnswers]);
 
+  const endExam = useCallback(() => {
+    const endData = {
+      exam: Number(examId),
+      student: 1,
+      answers: [...fetchedQuestionAnswers, ...questionAnswers],
+      end: dayjs.utc().toISOString(),
+    };
+    console.log(endData);
+    axios
+      .patch(examPageURL, endData)
+      .then((res) => {
+        console.log(res);
+        setRemainingTime(res.data.remain_time);
+        setFetchedQuestionAnswers(res.data.answers);
+        pushNotification("success", "آزمون با موفقیت به اتمام رسید.");
+        navigate("/", { replace: true });
+      })
+      .catch((err) => console.log(err.response));
+  }, [examId, examPageURL, fetchedQuestionAnswers, navigate, questionAnswers]);
+
   const handleExamSubmission = useCallback(
     (event) => {
       event.preventDefault();
-      const endData = {
-        exam: Number(examId),
-        student: 1,
-        answers: [...fetchedQuestionAnswers, ...questionAnswers],
-        end: dayjs.utc().toISOString(),
-      };
-      console.log(endData);
-      axios
-        .patch(examPageURL, endData)
-        .then((res) => {
-          console.log(res);
-          setRemainingTime(res.data.remain_time);
-          setFetchedQuestionAnswers(res.data.answers);
-          pushNotification("success", "آزمون با موفقیت به اتمام رسید.");
-          navigate("/", { replace: true });
-        })
-        .catch((err) => console.log(err.response));
+      endExam();
     },
-    [examId, examPageURL, fetchedQuestionAnswers, navigate, questionAnswers]
+    [endExam]
   );
 
   useEffect(() => {
@@ -132,7 +136,7 @@ function ExamResult() {
                   <Countdown
                     title="زمان باقی مانده"
                     value={Date.now() + remainingTime * 60 * 1000}
-                    // onFinish={onFinish}
+                    onFinish={endExam}
                   />
                 </div>
               </div>
