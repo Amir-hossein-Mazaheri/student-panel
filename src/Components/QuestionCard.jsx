@@ -1,6 +1,7 @@
 import { Radio, Space } from "antd";
 import { useCallback, useState } from "react";
 import Tag from "../Common/Tag";
+import convertHardness from "../Helpers/convertHardness";
 
 function QuestionCard({
   id,
@@ -31,7 +32,6 @@ function QuestionCard({
         answers.push({
           question: id,
           choice: value,
-          // student_exam: Number(answerListId),
         });
       }
       setQuestionAnswers(answers);
@@ -46,20 +46,28 @@ function QuestionCard({
           <h2 className="text-lg text-gray-800 font-medium">{questionTag}</h2>
         )}
         <div className="flex gap-3">
-          {categories.map((category) => (
+          {categories.slice(0, categories.length - 1).map((category) => (
             <Tag className="bg-gray-300 rounded-md">{category}</Tag>
           ))}
+          <Tag className="bg-gray-300 rounded-md">
+            {convertHardness(categories[categories.length - 1])}
+          </Tag>
         </div>
       </div>
 
       <div className="mt-5">
-        <h3 className="text-md font-medium">{title}</h3>
+        <h3
+          className="text-md font-medium"
+          dangerouslySetInnerHTML={{ __html: title }}
+        ></h3>
         <div className="mt-5 space-y-4">
           <Radio.Group onChange={addQuestionAnswer} value={choice}>
             <Space direction="vertical">
               {choices.map((choice) => (
                 <Radio disabled={disabled} value={choice.id}>
-                  {choice.text}
+                  <span
+                    dangerouslySetInnerHTML={{ __html: choice.text }}
+                  ></span>
                 </Radio>
               ))}
               <Radio disabled={disabled} value={null}>
