@@ -104,11 +104,8 @@ function ExamCard({
               <Item label="غلط">
                 <span>{abstractInfo.wrong}</span>
               </Item>
-              <Item label="درصد خام">
-                <span>{abstractInfo.purePercent}</span>
-              </Item>
               <Item label="درصد">
-                <span>{abstractInfo.percent}</span>
+                <span>{parseFloat(abstractInfo.percent).toFixed(2)}</span>
               </Item>
             </Descriptions>
           </div>
