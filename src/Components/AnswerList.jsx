@@ -8,13 +8,21 @@ function AnswerList({ answers, children }) {
         title: "شماره",
         dataIndex: "number",
         key: "number",
-        render: (text) => <p>{text}</p>,
+        render: (text) => <p>{text + 1}</p>,
       },
       {
         title: "وضعیت",
         dataIndex: "status",
         key: "status",
-        render: (text) => <p>{text}</p>,
+        render: (text, record) => {
+          if (record.selected === record.correct) {
+            return <p>صحیح</p>;
+          } else if (record.selected !== record) {
+            return <p>غلط</p>;
+          } else {
+            return <p>نزده</p>;
+          }
+        },
       },
       {
         title: "گزینه انتخابی",
@@ -31,15 +39,15 @@ function AnswerList({ answers, children }) {
     ];
   }, []);
 
-  // const dynamicBg = useCallback((record) => {
-  //   const { selected, correct } = record;
-  //   if (selected === correct) {
-  //     return "bg-green-200";
-  //   }
-  //   if (selected !== correct && selected) {
-  //     return "bg-red-200";
-  //   }
-  // }, []);
+  const dynamicBg = useCallback((record) => {
+    const { selected, correct } = record;
+    if (selected === correct) {
+      return "bg-green-200";
+    }
+    if (selected !== correct && selected) {
+      return "bg-red-200";
+    }
+  }, []);
 
   return (
     <div className="mt-8 mb-5">
@@ -48,7 +56,7 @@ function AnswerList({ answers, children }) {
         pagination={false}
         columns={formData}
         dataSource={answers}
-        // rowClassName={dynamicBg}
+        rowClassName={dynamicBg}
       />
     </div>
   );
