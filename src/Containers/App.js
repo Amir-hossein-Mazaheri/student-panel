@@ -23,7 +23,7 @@ const loadingSpinner = (
 function App() {
   return (
     <Suspense fallback={loadingSpinner}>
-      <BrowserRouter>
+      <BrowserRouter basename="student-panel">
         <Routes>
           <Route element={<MainLayout asRoute={true} />}>
             <Route index element={<HomePage />} />

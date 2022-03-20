@@ -1,5 +1,6 @@
 {
   "name": "react-default-structure",
+  "homepage": "http://lapluse.ir/student-panel",
   "version": "1.0.0",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.0",
