@@ -1,6 +1,6 @@
 import { Dropdown, Menu } from "antd";
-import { useCallback, useMemo } from "react";
-import { useParams } from "react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import useSWR from "swr";
 import Button from "../Common/Button";
 import ExamCard from "../Common/ExamCard";
@@ -9,28 +9,42 @@ import AnswerList from "../Components/AnswerList";
 import fetcher from "../Helpers/fetcher";
 import FullAnswerList from "../Components/FullAnswerList";
 import { showJalaliTime } from "../Helpers/convertToJalali";
+import axios from "axios";
+import pushNotification from "../Helpers/pushNotification";
 
 function ExamResult() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [answerList, setAnswerList] = useState();
+  const [studentResult, setStudentResult] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`/exams/${id}/students/`)
+      .then((res) => {
+        console.log(res);
+        setAnswerList(res.data);
+        axios
+          .get(`/exams/${id}/students/${res.data.answer_sheet}/results`)
+          .then((res) => {
+            console.log(res);
+            setStudentResult(res.data);
+          })
+          .catch((err) => console.log(err.response));
+      })
+      .catch((err) => {
+        console.log(err.response);
+        if (err.response.status === 404) {
+          pushNotification("error", "پاسخنامه ای یافت نشد.");
+          setAnswerList(404);
+          navigate("/");
+        }
+      });
+  }, [id, navigate]);
 
   const { data: examResult } = useSWR(`/exams/${id}/`, fetcher);
-  const { data: studentResult } = useSWR(
-    `/exams/${id}/students/2/results`,
-    fetcher
-  );
 
-  const convertStatus = useCallback((status) => {
-    switch (status) {
-      case "wrong":
-        return "غلط";
-      case "correct":
-        return "صحصیح";
-      case "noanswer":
-        return "نزده";
-      default:
-        return;
-    }
-  }, []);
+  console.log(answerList);
 
   const printMenu = useMemo(() => {
     if (!examResult) return;
@@ -40,7 +54,7 @@ function ExamResult() {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`/print_exam_questions/${examResult.raw_exam.id}`}
+            href={`http://lapluse.ir/examapi/print_exam_questions/${examResult.raw_exam.id}`}
           >
             <span>پرینت آزمون</span>
           </a>
@@ -49,29 +63,29 @@ function ExamResult() {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`/print_exam_all/${examResult.raw_exam.id}`}
+            href={`http://lapluse.ir/examapi/print_exam_all/${examResult.raw_exam.id}`}
           >
             <span>پرینت پاسخنامه تشریحی</span>
           </a>
         </Menu.Item>
-        {/* <Menu.Item>
+        <Menu.Item>
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://www.luohanacademy.com"
+            href={`http://lapluse.ir/examapi/print_exam_keys/${examResult.raw_exam.id}`}
           >
             <span>پرینت کلید آزمون</span>
           </a>
-        </Menu.Item> */}
+        </Menu.Item>
       </Menu>
     );
-  }, []);
+  }, [examResult]);
 
-  if (!examResult || !studentResult) {
+  if (!examResult || !studentResult || !answerList) {
     return <Spinner />;
   }
 
-  console.log(studentResult);
+  console.log("student result", studentResult);
 
   return (
     <div>
@@ -103,23 +117,20 @@ function ExamResult() {
         abstractInfo={{
           questionCount: examResult.raw_exam.questions_count,
           empty: studentResult.noanswers,
-          correct: studentResult.correct,
-          wrong: studentResult.wrong,
+          correct: studentResult.corrects,
+          wrong: studentResult.wrongs,
           percent: studentResult.percent,
         }}
       />
 
       <div>
         <AnswerList
-          answers={studentResult.details.map((detail, index) => ({
+          answers={studentResult.answer_sheet.map((sheet, index) => ({
             key: index,
             number: index,
-            status: convertStatus(detail.status),
-            selected: detail.choice ? (detail.choice.id % 4) + 1 : "نزده",
-            correct:
-              (detail.question.choices.find((choice) => choice.is_correct).id %
-                4) +
-              1,
+            status: "",
+            selected: sheet.student_answer + 1,
+            correct: sheet.correct + 1,
           }))}
         >
           <div className="mb-5 flex justify-between">
