@@ -28,7 +28,7 @@ function ExamsHistory({ exams }) {
             ]}
             time={{
               start: showJalaliTime(exam.start),
-              end: showJalaliTime(exam.start),
+              end: showJalaliTime(exam.end),
               duration: exam.time + " دقیقه",
             }}
           />
