@@ -1,5 +1,6 @@
-import { Statistic } from "antd";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
+import { Statistic } from "antd";
 import Button from "../Common/Button";
 import ExamCard from "../Common/ExamCard";
 import QuestionCard from "../Components/QuestionCard";
@@ -95,7 +96,7 @@ function ExamResult() {
       <ExamCard
         title={examData.exam.raw_exam.name}
         count={{
-          allCount: examData.exam.raw_exam.questions.length,
+          allCount: examData.questions.length,
           eachCount: [
             { title: "آسان", value: examData.exam.raw_exam.easies_count },
             { title: "متوسط", value: examData.exam.raw_exam.mediums_count },
@@ -191,7 +192,7 @@ function ExamResult() {
           </div>
 
           <div className="space-y-8 mt-10">
-            {examData.exam.raw_exam.questions.map((question, index) => (
+            {examData.questions.map((question, index) => (
               <QuestionCard
                 key={question.id}
                 id={question.id}
