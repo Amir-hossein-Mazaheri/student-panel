@@ -20,7 +20,8 @@ function UpcomingExams({ exams }) {
       axios
         .post(`/exams/${examId}/students/`, answerBody)
         .then((res) => {
-          navigate(`/exam/${examId}-${res.data.id}/`);
+          const answerListId = res.data.id;
+          navigate(`/exam/${examId}-${answerListId}/`);
           dispatch(SET_REMAINING_TIME({ time: res.data.remain_time }));
         })
         .catch((err) => console.log(err.response));
