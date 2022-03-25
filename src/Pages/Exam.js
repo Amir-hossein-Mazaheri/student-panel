@@ -34,8 +34,6 @@ function ExamResult() {
   const saveExamAnswers = useCallback(() => {
     console.log(questionAnswers);
     const saveData = {
-      exam: Number(examId),
-      student: 1,
       answers: [...fetchedQuestionAnswers, ...questionAnswers],
     };
     console.log(saveData);
@@ -51,12 +49,10 @@ function ExamResult() {
         console.log(err.response);
         pushNotification("error", "در ذخیره پاسخ ها مشکلی پیش امده.");
       });
-  }, [examId, examPageURL, fetchedQuestionAnswers, questionAnswers]);
+  }, [examPageURL, fetchedQuestionAnswers, questionAnswers]);
 
   const endExam = useCallback(() => {
     const endData = {
-      exam: Number(examId),
-      student: 1,
       answers: [...fetchedQuestionAnswers, ...questionAnswers],
       end: dayjs.utc().toISOString(),
     };
@@ -74,7 +70,7 @@ function ExamResult() {
         console.log(err.response);
         pushNotification("error", "در ذخیره سازی آزمون مشکلی پیش آمده.");
       });
-  }, [examId, examPageURL, fetchedQuestionAnswers, navigate, questionAnswers]);
+  }, [examPageURL, fetchedQuestionAnswers, navigate, questionAnswers]);
 
   const handleExamSubmission = useCallback(
     (event) => {
