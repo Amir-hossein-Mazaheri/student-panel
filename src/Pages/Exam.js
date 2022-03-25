@@ -61,7 +61,7 @@ function ExamResult() {
   const endExam = useCallback(() => {
     const endData = {
       answers: [...fetchedQuestionAnswers, ...questionAnswers],
-      end: dayjs.utc().toISOString(),
+      end: dayjs.utc().second(0).toISOString(),
     };
     console.log(endData);
     axios
