@@ -47,7 +47,10 @@ function ExamResult() {
         setFetchedQuestionAnswers(res.data.answers);
         pushNotification("success", "پاسخ ها با موفقیت ذخیره شد.");
       })
-      .catch((err) => console.log(err.response));
+      .catch((err) => {
+        console.log(err.response);
+        pushNotification("error", "در ذخیره پاسخ ها مشکلی پیش امده.");
+      });
   }, [examId, examPageURL, fetchedQuestionAnswers, questionAnswers]);
 
   const endExam = useCallback(() => {
@@ -67,15 +70,19 @@ function ExamResult() {
         pushNotification("success", "آزمون با موفقیت به اتمام رسید.");
         navigate("/", { replace: true });
       })
-      .catch((err) => console.log(err.response));
+      .catch((err) => {
+        console.log(err.response);
+        pushNotification("error", "در ذخیره سازی آزمون مشکلی پیش آمده.");
+      });
   }, [examId, examPageURL, fetchedQuestionAnswers, navigate, questionAnswers]);
 
   const handleExamSubmission = useCallback(
     (event) => {
       event.preventDefault();
       endExam();
+      navigate("/", { replace: true });
     },
-    [endExam]
+    [endExam, navigate]
   );
 
   useEffect(() => {
