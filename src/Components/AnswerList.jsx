@@ -14,10 +14,10 @@ function AnswerList({ answers, children }) {
         title: "وضعیت",
         dataIndex: "status",
         key: "status",
-        render: (text, record) => {
-          if (record.selected === record.correct) {
+        render: (text, { selected, correct }) => {
+          if (selected === correct) {
             return <p>صحیح</p>;
-          } else if (record.selected !== record) {
+          } else if (selected !== correct && selected) {
             return <p>غلط</p>;
           } else {
             return <p>نزده</p>;
@@ -28,7 +28,7 @@ function AnswerList({ answers, children }) {
         title: "گزینه انتخابی",
         dataIndex: "selected",
         key: "selected",
-        render: (text) => <p>{text ? text : "____"}</p>,
+        render: (text) => <p>{text ? text : "----"}</p>,
       },
       {
         title: "گزینه صحیح",
