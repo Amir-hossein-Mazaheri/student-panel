@@ -71,12 +71,12 @@ function ExamResult() {
         setRemainingTime(res.data.remain_time);
         setFetchedQuestionAnswers(res.data.answers);
         pushNotification("success", "آزمون با موفقیت به اتمام رسید.");
-        navigate("/", { replace: true });
       })
       .catch((err) => {
         console.log(err.response);
         pushNotification("error", "در ذخیره سازی آزمون مشکلی پیش آمده.");
-      });
+      })
+      .finally(() => navigate("/", { replace: true }));
   }, [examPageURL, fetchedQuestionAnswers, navigate, questionAnswers]);
 
   const handleExamSubmission = useCallback(
