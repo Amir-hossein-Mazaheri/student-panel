@@ -1,9 +1,10 @@
 import { useCallback } from "react";
+
 import { Outlet } from "react-router";
+import useSWR from "swr";
 import Button from "../Common/Button";
 import ContentLayout from "./ContentLayout";
 import Auth from "../Helpers/Auth";
-import useSWR from "swr";
 import fetcher from "../Helpers/fetcher";
 import Spinner from "../Common/Spinner";
 
