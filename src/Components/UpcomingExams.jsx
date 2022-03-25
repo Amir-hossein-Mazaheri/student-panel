@@ -12,13 +12,10 @@ function UpcomingExams({ exams }) {
 
   const makeAnswerList = useCallback(
     (examId) => {
-      const answerBody = {
-        exam: examId,
-        student: 2,
-        answers: [],
-      };
       axios
-        .post(`/exams/${examId}/students/`, answerBody)
+        .post(`/exams/${examId}/students/`, {
+          answers: [],
+        })
         .then((res) => {
           const answerListId = res.data.id;
           navigate(`/exam/${examId}-${answerListId}/`);
