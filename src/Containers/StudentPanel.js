@@ -15,10 +15,10 @@ axios.interceptors.response.use(
   async (err) => {
     const config = err.config;
     if (err.response.status === 401) {
-      console.log("getting refresh !");
-      const refresh = await Auth.checkLogin();
-      localStorage.setItem("refresh", refresh);
-      config.headers["Authorization"] = "Bearer " + refresh;
+      console.log("refreshing access !");
+      const access = await Auth.checkLogin();
+      localStorage.setItem("access", access);
+      config.headers["Authorization"] = "Bearer " + access;
       return axios(config);
     }
 
