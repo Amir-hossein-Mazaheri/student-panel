@@ -31,25 +31,32 @@ function ExamResult() {
     return `/exams/${examId}/students/${answerListId}/`;
   }, [answerListId, examId]);
 
-  const saveExamAnswers = useCallback(() => {
-    console.log(questionAnswers);
-    const saveData = {
-      answers: [...fetchedQuestionAnswers, ...questionAnswers],
-    };
-    console.log(saveData);
-    axios
-      .patch(examPageURL, saveData)
-      .then((res) => {
-        console.log(res);
-        setRemainingTime(res.data.remain_time);
-        setFetchedQuestionAnswers(res.data.answers);
-        pushNotification("success", "پاسخ ها با موفقیت ذخیره شد.");
-      })
-      .catch((err) => {
-        console.log(err.response);
-        pushNotification("error", "در ذخیره پاسخ ها مشکلی پیش امده.");
-      });
-  }, [examPageURL, fetchedQuestionAnswers, questionAnswers]);
+  const saveExamAnswers = useCallback(
+    (type = "auto") => {
+      console.log(questionAnswers);
+      const saveData = {
+        answers: [...fetchedQuestionAnswers, ...questionAnswers],
+      };
+      console.log(saveData);
+      axios
+        .patch(examPageURL, saveData)
+        .then((res) => {
+          console.log(res);
+          setRemainingTime(res.data.remain_time);
+          setFetchedQuestionAnswers(res.data.answers);
+          if (type === "manual") {
+            pushNotification("success", "پاسخ ها با موفقیت ذخیره شد.");
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+          if (type === "manual") {
+            pushNotification("error", "در ذخیره پاسخ ها مشکلی پیش امده.");
+          }
+        });
+    },
+    [examPageURL, fetchedQuestionAnswers, questionAnswers]
+  );
 
   const endExam = useCallback(() => {
     const endData = {
@@ -147,7 +154,7 @@ function ExamResult() {
               </div>
               <div className="flex gap-5">
                 <Button
-                  onClick={saveExamAnswers}
+                  onClick={() => saveExamAnswers("manual")}
                   className="bg-green-500 flex mr-auto text-white items-center gap-1"
                 >
                   <span>
@@ -212,6 +219,7 @@ function ExamResult() {
                 choices={question.choices}
                 setQuestionAnswers={setQuestionAnswers}
                 questionAnswers={questionAnswers}
+                saveExamAnswers={saveExamAnswers}
               />
             ))}
           </div>

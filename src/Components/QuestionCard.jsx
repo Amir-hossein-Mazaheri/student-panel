@@ -13,7 +13,7 @@ function QuestionCard({
   disabled = false,
   setQuestionAnswers,
   questionAnswers,
-  answerListId,
+  saveExamAnswers,
 }) {
   const [choice, setChoice] = useState(defaultChoice || null);
   const addQuestionAnswer = useCallback(
@@ -35,8 +35,9 @@ function QuestionCard({
         });
       }
       setQuestionAnswers(answers);
+      saveExamAnswers();
     },
-    [questionAnswers, setQuestionAnswers, id]
+    [questionAnswers, setQuestionAnswers, saveExamAnswers, id]
   );
   // student_exam => answer list id , question => question_id, choice => choice
   return (
