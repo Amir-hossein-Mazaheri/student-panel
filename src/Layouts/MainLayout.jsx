@@ -24,7 +24,7 @@ function MainLayout({ asRoute = false, children }) {
         <div className="bg-green-500 font-semibold text-lg text-center px-5 py-5">
           <p>
             <span>خوش آمدی</span>{" "}
-            <span>{userInfo.first_name + userInfo.last_name}</span>
+            <span>{userInfo.first_name + " " + userInfo.last_name}</span>
           </p>
         </div>
 
