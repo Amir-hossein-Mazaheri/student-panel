@@ -3,12 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const exam = createSlice({
   name: "exam",
   initialState: {
-      remainingTime: 0,
+    remainingTime: undefined,
   },
   reducers: {
-      SET_REMAINING_TIME: (store, action) => {
-          store.remainingTime = action.payload.time;
-      }
+    SET_REMAINING_TIME: (store, action) => {
+      store.remainingTime = action.payload.time;
+    },
   },
 });
 

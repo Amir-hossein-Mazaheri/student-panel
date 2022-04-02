@@ -39,7 +39,7 @@ function QuestionCard({
     },
     [questionAnswers, setQuestionAnswers, saveExamAnswers, id]
   );
-  // student_exam => answer list id , question => question_id, choice => choice
+
   return (
     <div className="px-7 py-4 rounded-lg shadow-lg shadow-gray-200">
       <div className="flex items-center justify-between">
@@ -58,7 +58,7 @@ function QuestionCard({
 
       <div className="mt-5">
         <h3
-          className="text-md font-medium"
+          className="text-md font-medium flex gap-3 flex-wrap items-center"
           dangerouslySetInnerHTML={{ __html: title }}
         ></h3>
         <div className="mt-5 space-y-4">

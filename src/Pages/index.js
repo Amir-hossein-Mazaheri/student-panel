@@ -29,10 +29,6 @@ function HomePage() {
     return <Spinner />;
   }
 
-  // console.log(dayjs.utc(examList[0].end).format("YYYY MM DD"));
-  // console.log(dayjs.utc().format("YYYY MM DD"));
-  // console.log(dayjs.utc(examList[0].end) > dayjs.utc());
-
   return (
     <div>
       <Tabs

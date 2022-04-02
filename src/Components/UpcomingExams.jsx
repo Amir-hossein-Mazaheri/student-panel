@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import ExamCard from "../Common/ExamCard";
 import { showJalaliTime } from "../Helpers/convertToJalali";
+import pushNotification from "../Helpers/pushNotification";
 import { SET_REMAINING_TIME } from "../Store/entities/exam";
 
 function UpcomingExams({ exams }) {
@@ -13,15 +14,30 @@ function UpcomingExams({ exams }) {
   const makeAnswerList = useCallback(
     (examId) => {
       axios
-        .post(`/exams/${examId}/students/`, {
-          answers: [],
-        })
+        .get(`/exams/${examId}/students`)
         .then((res) => {
-          const answerListId = res.data.id;
-          navigate(`/exam/${examId}-${answerListId}/`);
-          dispatch(SET_REMAINING_TIME({ time: res.data.remain_time }));
+          console.log(res);
+          if (!res.data.end) {
+            navigate(`/exam/${examId}-${res.data.id}/`);
+          }
+          pushNotification("error", "آزمون شما به پایان رسیده است.");
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+          if (err.response.status === 404) {
+            axios
+              .post(`/exams/${examId}/students/`, {
+                answers: [],
+              })
+              .then((res) => {
+                const answerListId = res.data.id;
+                navigate(`/exam/${examId}-${answerListId}/`);
+                dispatch(SET_REMAINING_TIME({ time: res.data.remain_time }));
+              })
+              .catch((err) => console.log(err.response));
+          }
+        });
     },
     [dispatch, navigate]
   );

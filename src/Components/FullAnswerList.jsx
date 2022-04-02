@@ -6,8 +6,11 @@ function FullAnswerList({ answersList }) {
           <span>پاسخنامه تشریحی</span>
         </h2>
       </div>
-      {answersList.map((answer) => (
+      {answersList.map((answer, index) => (
         <div className="px-12 py-7 shadow-lg shadow-gray-200 rounded-lg">
+          <h2 className="mb-3 font-bold text-xl">
+            <span>سوال</span> <span>{index + 1}</span>
+          </h2>
           <div
             className="px-4 py-2 bg-gray-100 rounded-md mb-4"
             dangerouslySetInnerHTML={{ __html: answer.question.description }}
