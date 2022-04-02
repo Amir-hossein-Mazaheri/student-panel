@@ -18,8 +18,8 @@ function ExamCard({
 
   return (
     <div className="rounded-lg space-y-7 px-7 py-4 shadow-lg shadow-gray-200">
-      <div className="flex justify-between">
-        <div className="grow space-y-4">
+      <div className="flex md:flex-nowrap flex-wrap justify-between">
+        <div className="space-y-4">
           <div>
             <h2 className="font-medium text-lg text-gray-800">
               <span>نام آزمون : </span>
@@ -42,7 +42,7 @@ function ExamCard({
             <div className="space-y-2 mt-3">
               {categories.map((category) => (
                 <p
-                  className="flex gap-1 items-center"
+                  className="flex gap-1 items-center flex-wrap"
                   key={JSON.stringify(category)}
                 >
                   <span>{category.title} :</span>
