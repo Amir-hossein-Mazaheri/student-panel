@@ -1,5 +1,5 @@
 import { Radio, Space } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Tag from "../Common/Tag";
 import convertHardness from "../Helpers/convertHardness";
 
@@ -15,7 +15,7 @@ function QuestionCard({
   questionAnswers,
   saveExamAnswers,
   setSaveExamUpdater,
-  saveExamUpdater
+  saveExamUpdater,
 }) {
   const [choice, setChoice] = useState(defaultChoice || null);
   const addQuestionAnswer = useCallback(
@@ -32,16 +32,14 @@ function QuestionCard({
       ]);
       setSaveExamUpdater(saveExamUpdater + 1);
     },
-    [questionAnswers, setQuestionAnswers, saveExamAnswers, id]
+    [
+      setQuestionAnswers,
+      questionAnswers,
+      id,
+      setSaveExamUpdater,
+      saveExamUpdater,
+    ]
   );
-  useEffect(()=>{
-    console.log("saving answer")
-    questionAnswers.map(q=>{
-      if (q.id == id){
-        setChoice(q.choice)
-      }
-    })
-  },[questionAnswers])
 
   return (
     <div className="px-7 py-4 rounded-lg shadow-lg shadow-gray-200">
@@ -61,7 +59,7 @@ function QuestionCard({
 
       <div className="mt-5">
         <h3
-          className="text-md font-medium flex gap-3 flex-wrap items-center"
+          className="text-md font-medium question-title"
           dangerouslySetInnerHTML={{ __html: title }}
         ></h3>
         <div className="mt-5 space-y-4">
@@ -70,6 +68,7 @@ function QuestionCard({
               {choices.map((choice) => (
                 <Radio disabled={disabled} value={choice.id}>
                   <span
+                    className="ltr"
                     dangerouslySetInnerHTML={{ __html: choice.text }}
                   ></span>
                 </Radio>

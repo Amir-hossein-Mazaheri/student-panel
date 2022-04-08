@@ -1,0 +1,3 @@
+.question-title p {
+  @apply flex gap-3 flex-wrap items-center;
+}

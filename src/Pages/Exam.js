@@ -22,7 +22,7 @@ function ExamResult() {
   const [fetchedQuestionAnswers, setFetchedQuestionAnswers] = useState([]);
   const [questionAnswers, setQuestionAnswers] = useState([]);
   const [examData, setExamData] = useState();
-  const [saveExamUpdater,setSaveExamUpdater] = useState(0);
+  const [saveExamUpdater, setSaveExamUpdater] = useState(0);
   const navigate = useNavigate();
 
   const examId = id.split("-")[0];
@@ -58,7 +58,7 @@ function ExamResult() {
           }
         });
     },
-    [examPageURL, fetchedQuestionAnswers, questionAnswers]
+    [examPageURL, questionAnswers]
   );
 
   const endExam = useCallback(() => {
@@ -80,7 +80,7 @@ function ExamResult() {
         pushNotification("error", "در ذخیره سازی آزمون مشکلی پیش آمده.");
       })
       .finally(() => navigate("/", { replace: true }));
-  }, [examPageURL, fetchedQuestionAnswers, navigate, questionAnswers]);
+  }, [examPageURL, navigate, questionAnswers]);
 
   const handleExamSubmission = useCallback(
     (event) => {
@@ -98,9 +98,10 @@ function ExamResult() {
       setRemainingTime(res.data.remain_time);
     });
   }, [examPageURL, id]);
+
   useEffect(() => {
     saveExamAnswers();
-  }, [saveExamUpdater]);
+  }, [saveExamAnswers, saveExamUpdater]);
 
   if (!examData) {
     return <Spinner />;
@@ -225,8 +226,8 @@ function ExamResult() {
                 setQuestionAnswers={setQuestionAnswers}
                 questionAnswers={questionAnswers}
                 saveExamAnswers={saveExamAnswers}
-                setSaveExamUpdater = {setSaveExamUpdater}
-                saveExamUpdater = {saveExamUpdater}
+                setSaveExamUpdater={setSaveExamUpdater}
+                saveExamUpdater={saveExamUpdater}
               />
             ))}
           </div>
