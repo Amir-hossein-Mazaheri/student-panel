@@ -22,6 +22,7 @@ function ExamResult() {
   const [fetchedQuestionAnswers, setFetchedQuestionAnswers] = useState([]);
   const [questionAnswers, setQuestionAnswers] = useState([]);
   const [examData, setExamData] = useState();
+  const [saveExamUpdater,setSaveExamUpdater] = useState(0);
   const navigate = useNavigate();
 
   const examId = id.split("-")[0];
@@ -33,17 +34,19 @@ function ExamResult() {
 
   const saveExamAnswers = useCallback(
     (type = "auto") => {
-      console.log(questionAnswers);
+      console.log("local answers", questionAnswers);
       const saveData = {
-        answers: [...fetchedQuestionAnswers, ...questionAnswers],
+        answers: [...questionAnswers],
       };
-      console.log(saveData);
+      console.log("commiting answers", saveData);
       axios
         .patch(examPageURL, saveData)
         .then((res) => {
-          console.log(res);
+          console.log("server response after save", res);
           setRemainingTime(res.data.remain_time);
           setFetchedQuestionAnswers(res.data.answers);
+          setQuestionAnswers(res.data.answers);
+          console.log("locals", questionAnswers);
           if (type === "manual") {
             pushNotification("success", "پاسخ ها با موفقیت ذخیره شد.");
           }
@@ -60,7 +63,7 @@ function ExamResult() {
 
   const endExam = useCallback(() => {
     const endData = {
-      answers: [...fetchedQuestionAnswers, ...questionAnswers],
+      answers: [...questionAnswers],
       end: dayjs.utc().second(0).toISOString(),
     };
     console.log(endData);
@@ -91,15 +94,17 @@ function ExamResult() {
   useEffect(() => {
     axios.get(examPageURL).then((res) => {
       setExamData(res.data);
+      //setQuestionAnswers(res.data.answers)
       setRemainingTime(res.data.remain_time);
     });
   }, [examPageURL, id]);
+  useEffect(() => {
+    saveExamAnswers();
+  }, [saveExamUpdater]);
 
   if (!examData) {
     return <Spinner />;
   }
-
-  console.log(examData);
 
   return (
     <div>
@@ -220,6 +225,8 @@ function ExamResult() {
                 setQuestionAnswers={setQuestionAnswers}
                 questionAnswers={questionAnswers}
                 saveExamAnswers={saveExamAnswers}
+                setSaveExamUpdater = {setSaveExamUpdater}
+                saveExamUpdater = {saveExamUpdater}
               />
             ))}
           </div>
